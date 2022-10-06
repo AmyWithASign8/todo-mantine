@@ -1,25 +1,30 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { ColorScheme } from "@mantine/core";
 
 export interface ThemeState {
-  themeMod: string;
+  theme: ColorScheme;
 }
 
 const initialState: ThemeState = {
-  themeMod: "light",
+  theme: (localStorage.getItem("theme") as ColorScheme) || "light",
 };
 
 export const themeSlice = createSlice({
-  name: "theme",
+  name: "themeState",
   initialState,
   reducers: {
     switchTheme: (state) => {
-      state.themeMod = "dark";
+      if (state.theme === "dark") {
+        state.theme = "light";
+        localStorage.setItem("theme", "light");
+      } else {
+        state.theme = "dark";
+        localStorage.setItem("theme", "dark");
+      }
     },
   },
 });
 
-// Action creators are generated for each case reducer function
 export const { switchTheme } = themeSlice.actions;
-
 export default themeSlice.reducer;

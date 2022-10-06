@@ -9,11 +9,15 @@ import {
   PasswordInput,
   createStyles,
   ActionIcon,
+  Menu,
+  Center,
+  Text,
 } from "@mantine/core";
 import InputMask from "react-input-mask";
 import { useAppDispatch } from "../../redux/hooks/hook";
 import { switchTheme } from "../../redux/slices/themeSlice";
 import { useDispatch } from "react-redux";
+import { IconAdjustments } from "@tabler/icons";
 
 const useStyles = createStyles(() => ({
   header: {
@@ -33,15 +37,21 @@ function Header() {
           <Group noWrap position="apart">
             <img src={MantineImg} className="w-28 rounded-full" />
             <h1 className="font-bold text-6xl ml-4">Mantine</h1>
-            <Button onClick={() => setOpened(true)} className="mr-10">
-              Регистрация
-            </Button>
-            <ActionIcon
-              variant="outline"
-              color="red"
-              mr={20}
-              onClick={() => dispatch(switchTheme())}
-            />
+            <Group position="right" mr={100}>
+              <Menu shadow="md" width={300}>
+                <Menu.Target>
+                  <Button>Toggle menu</Button>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item onClick={() => setOpened(true)}>
+                    <Center>Регистрация</Center>
+                  </Menu.Item>
+                  <Menu.Item onClick={() => dispatch(switchTheme())}>
+                    <Center>Сменить тему</Center>
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            </Group>
           </Group>
         </div>
         <div className="ml-auto"></div>
