@@ -1,6 +1,6 @@
 import React from "react";
-import { Card, Image, Group, Text, Badge, Button } from "@mantine/core";
-import { IPizza } from "../App";
+import { Card, Image, Group, Text, Badge, Button, Loader } from "@mantine/core";
+import { IPizza } from "../pages/Home";
 import { ShoppingCart } from "tabler-icons-react";
 
 const PizzaCard: React.FC<IPizza> = ({ imageUrl, name }) => {
@@ -24,7 +24,7 @@ const PizzaCard: React.FC<IPizza> = ({ imageUrl, name }) => {
         </Text>
 
         <Button
-          variant="light"
+          variant="outline"
           color="orange"
           fullWidth
           mt="md"

@@ -15,7 +15,8 @@ import {
 import InputMask from "react-input-mask";
 import { switchTheme } from "../../redux/slices/themeSlice";
 import { useDispatch } from "react-redux";
-import { IconUser } from "@tabler/icons";
+import { IconUser, IconShoppingCart } from "@tabler/icons";
+import { Link } from "react-router-dom";
 
 const useStyles = createStyles(() => ({
   header: {
@@ -47,39 +48,56 @@ function Header() {
       <Group>
         <Group noWrap position="apart" style={{ width: "100%" }}>
           <Group>
-            <img
-              src={MantineImg}
-              className="w-28 rounded-full"
-              style={{ width: "100px" }}
-            />
+            <Link to="/">
+              <img
+                src={MantineImg}
+                className="w-28 rounded-full"
+                style={{
+                  width: "100px",
+                  borderRadius: "10%",
+                  marginRight: "10px",
+                }}
+              />
+            </Link>
             <h1 className="font-bold text-6xl ml-4">Mantine</h1>
           </Group>
 
-          <Menu shadow="md" width={300}>
-            <Menu.Target>
+          <Group>
+            <Menu shadow="md" width={300}>
+              <Menu.Target>
+                <Button
+                  variant="gradient"
+                  gradient={{ from: "orange", to: "red" }}
+                >
+                  Меню
+                </Button>
+              </Menu.Target>
+              <Menu.Dropdown>
+                <Menu></Menu>
+                <Menu.Label>Авторизация</Menu.Label>
+                <Menu.Item onClick={() => setOpened(true)} icon={<IconUser />}>
+                  Регистрация
+                </Menu.Item>
+                <Menu.Item onClick={() => setOpened1(true)} icon={<IconUser />}>
+                  Войти в аккаунт
+                </Menu.Item>
+                <Menu.Label>Разное</Menu.Label>
+                <Menu.Item onClick={() => dispatch(switchTheme())}>
+                  Сменить тему
+                </Menu.Item>
+              </Menu.Dropdown>
+            </Menu>
+            <Link to="/cart">
               <Button
                 variant="gradient"
                 gradient={{ from: "orange", to: "red" }}
                 mr={100}
+                leftIcon={<IconShoppingCart />}
               >
-                Меню
+                Корзина
               </Button>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu></Menu>
-              <Menu.Label>Авторизация</Menu.Label>
-              <Menu.Item onClick={() => setOpened(true)} icon={<IconUser />}>
-                Регистрация
-              </Menu.Item>
-              <Menu.Item onClick={() => setOpened1(true)} icon={<IconUser />}>
-                Войти в аккаунт
-              </Menu.Item>
-              <Menu.Label>Разное</Menu.Label>
-              <Menu.Item onClick={() => dispatch(switchTheme())}>
-                Сменить тему
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
+            </Link>
+          </Group>
         </Group>
       </Group>
       <Drawer
