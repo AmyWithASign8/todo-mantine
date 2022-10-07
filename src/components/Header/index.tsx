@@ -10,10 +10,12 @@ import {
   Menu,
   Center,
   Modal,
+  Header as MantineHeaeder,
 } from "@mantine/core";
 import InputMask from "react-input-mask";
 import { switchTheme } from "../../redux/slices/themeSlice";
 import { useDispatch } from "react-redux";
+import { IconUser } from "@tabler/icons";
 
 const useStyles = createStyles(() => ({
   header: {
@@ -34,38 +36,51 @@ function Header() {
   };
 
   return (
-    <>
-      <Group className="fixed">
-        <Group className="bg-slate-800 text-slate-200">
-          <Group noWrap position="apart">
-            <img src={MantineImg} className="w-28 rounded-full" />
+    <MantineHeaeder
+      height={100}
+      style={{
+        position: "fixed",
+        width: "100%",
+        zIndex: "10",
+      }}
+    >
+      <Group>
+        <Group noWrap position="apart" style={{ width: "100%" }}>
+          <Group>
+            <img
+              src={MantineImg}
+              className="w-28 rounded-full"
+              style={{ width: "100px" }}
+            />
             <h1 className="font-bold text-6xl ml-4">Mantine</h1>
-            <Group position="right" mr={100}>
-              <Menu shadow="md" width={300}>
-                <Menu.Target>
-                  <Button>Меню</Button>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Input.Wrapper label="Авторизация">
-                    <Menu.Item onClick={() => setOpened(true)}>
-                      <Center>Регистрация</Center>
-                    </Menu.Item>
-                    <Menu.Item onClick={() => setOpened1(true)}>
-                      <Center>Войти в аккаунт</Center>
-                    </Menu.Item>
-                  </Input.Wrapper>
-
-                  <Input.Wrapper label="Разное">
-                    <Menu.Item onClick={() => dispatch(switchTheme())}>
-                      <Center>Сменить тему</Center>
-                    </Menu.Item>
-                  </Input.Wrapper>
-                </Menu.Dropdown>
-              </Menu>
-            </Group>
           </Group>
+
+          <Menu shadow="md" width={300}>
+            <Menu.Target>
+              <Button
+                variant="gradient"
+                gradient={{ from: "orange", to: "red" }}
+                mr={100}
+              >
+                Меню
+              </Button>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu></Menu>
+              <Menu.Label>Авторизация</Menu.Label>
+              <Menu.Item onClick={() => setOpened(true)} icon={<IconUser />}>
+                Регистрация
+              </Menu.Item>
+              <Menu.Item onClick={() => setOpened1(true)} icon={<IconUser />}>
+                Войти в аккаунт
+              </Menu.Item>
+              <Menu.Label>Разное</Menu.Label>
+              <Menu.Item onClick={() => dispatch(switchTheme())}>
+                Сменить тему
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
         </Group>
-        <div className="ml-auto"></div>
       </Group>
       <Drawer
         className="text-3xl"
@@ -103,7 +118,9 @@ function Header() {
           required
         />
         <Group position="center" mt="xl">
-          <Button>Регистрация</Button>
+          <Button variant="gradient" gradient={{ from: "orange", to: "red" }}>
+            Регистрация
+          </Button>
         </Group>
       </Drawer>
       <Drawer
@@ -131,10 +148,16 @@ function Header() {
           required
         />
         <Group position="center" mt="xl">
-          <Button onClick={() => handleOpenModal1()}>Войти</Button>
+          <Button
+            onClick={() => handleOpenModal1()}
+            variant="gradient"
+            gradient={{ from: "orange", to: "red" }}
+          >
+            Войти
+          </Button>
         </Group>
       </Drawer>
-    </>
+    </MantineHeaeder>
   );
 }
 
