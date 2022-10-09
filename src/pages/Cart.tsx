@@ -50,6 +50,7 @@ function Cart() {
             >
               +
             </Button>
+            <Title order={2}>количество</Title>
           </Group>
           <Button
             radius="xl"

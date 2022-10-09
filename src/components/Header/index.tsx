@@ -15,8 +15,14 @@ import {
 import InputMask from "react-input-mask";
 import { switchTheme } from "../../redux/slices/themeSlice";
 import { useDispatch } from "react-redux";
-import { IconUser, IconShoppingCart } from "@tabler/icons";
+import {
+  IconUser,
+  IconShoppingCart,
+  IconSunHigh,
+  IconMoon,
+} from "@tabler/icons";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../../redux/hooks/hook";
 
 const useStyles = createStyles(() => ({
   header: {
@@ -35,6 +41,7 @@ function Header() {
   const handleOpenModal1 = () => {
     setOpenModal(true);
   };
+  const theme = useAppSelector((state) => state.themeState.theme);
 
   return (
     <MantineHeaeder
@@ -82,7 +89,10 @@ function Header() {
                   Войти в аккаунт
                 </Menu.Item>
                 <Menu.Label>Разное</Menu.Label>
-                <Menu.Item onClick={() => dispatch(switchTheme())}>
+                <Menu.Item
+                  onClick={() => dispatch(switchTheme())}
+                  icon={theme === "light" ? <IconMoon /> : <IconSunHigh />}
+                >
                   Сменить тему
                 </Menu.Item>
               </Menu.Dropdown>
