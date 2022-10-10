@@ -23,6 +23,17 @@ import {
 } from "@tabler/icons";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks/hook";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { useAppDispatch } from "../../redux/hooks/hook";
+import { setUser } from "../../redux/slices/userSlice";
+
+interface FormsProps {
+  handleClick: (email: string, pass: string) => void;
+}
 
 const useStyles = createStyles(() => ({
   header: {
@@ -30,18 +41,34 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-function Header() {
+const Header: React.FC<FormsProps> = () => {
   const [opened, setOpened] = React.useState(false);
   const [opened1, setOpened1] = React.useState(false);
   const { classes } = useStyles();
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = React.useState(false);
-  const [closeModal, setCloseModal] = React.useState(false);
+  const [emailReg, setEmailReg] = React.useState("");
+  const [pswReg, setPswReg] = React.useState("");
+  const [emailAuth, setEmailAuth] = React.useState("");
+  const [pswAuth, setPswAuth] = React.useState("");
 
   const handleOpenModal1 = () => {
     setOpenModal(true);
   };
   const theme = useAppSelector((state) => state.themeState.theme);
+
+  const handleLogin = (email: string, password: string) => {
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then(console.log)
+      .catch(console.error);
+  };
+  const handleRegister = (email: string, password: string) => {
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(() => console.log(email, password))
+      .catch(console.error);
+  };
 
   return (
     <MantineHeaeder
@@ -80,7 +107,6 @@ function Header() {
                 </Button>
               </Menu.Target>
               <Menu.Dropdown>
-                <Menu></Menu>
                 <Menu.Label>Авторизация</Menu.Label>
                 <Menu.Item onClick={() => setOpened(true)} icon={<IconUser />}>
                   Регистрация
@@ -127,7 +153,15 @@ function Header() {
           label="Пожалуйста введите свой email"
           required
         >
-          <Input placeholder="email" size="md" className="mb-2" />
+          <Input
+            placeholder="email"
+            size="md"
+            className="mb-2"
+            value={emailReg}
+            onChange={(event: {
+              target: { value: React.SetStateAction<string> };
+            }) => setEmailReg(event.target.value)}
+          />
         </Input.Wrapper>
         <Input.Wrapper
           className="text-left"
@@ -141,12 +175,18 @@ function Header() {
           />
         </Input.Wrapper>
         <PasswordInput
+          value={pswReg}
+          onChange={(event) => setPswReg(event.target.value)}
           label="Введите свой пароль"
           placeholder="Пароль"
           required
         />
         <Group position="center" mt="xl">
-          <Button variant="gradient" gradient={{ from: "orange", to: "red" }}>
+          <Button
+            variant="gradient"
+            gradient={{ from: "orange", to: "red" }}
+            onClick={() => handleRegister(emailReg, pswReg)}
+          >
             Регистрация
           </Button>
         </Group>
@@ -168,16 +208,26 @@ function Header() {
           label="Пожалуйста введите свой email"
           required
         >
-          <Input placeholder="email" size="md" className="mb-2" />
+          <Input
+            value={emailAuth}
+            onChange={(event: {
+              target: { value: React.SetStateAction<string> };
+            }) => setEmailAuth(event.target.value)}
+            placeholder="email"
+            size="md"
+            className="mb-2"
+          />
         </Input.Wrapper>
         <PasswordInput
+          value={pswAuth}
+          onChange={(e) => setPswAuth(e.target.value)}
           label="Введите свой пароль"
           placeholder="Пароль"
           required
         />
         <Group position="center" mt="xl">
           <Button
-            onClick={() => handleOpenModal1()}
+            onClick={() => handleLogin("123", "213")}
             variant="gradient"
             gradient={{ from: "orange", to: "red" }}
           >
@@ -187,6 +237,6 @@ function Header() {
       </Drawer>
     </MantineHeaeder>
   );
-}
+};
 
 export default Header;

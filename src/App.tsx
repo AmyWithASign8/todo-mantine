@@ -15,7 +15,11 @@ function App() {
       theme={{ colorScheme: theme }}
     >
       <div className="App">
-        <Header />
+        <Header
+          handleClick={function (email: string, pass: string): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="cart" element={<Cart />} />

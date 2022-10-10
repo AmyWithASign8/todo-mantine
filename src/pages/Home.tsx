@@ -1,5 +1,14 @@
 import React from "react";
-import { Grid, Container, Loader, Group, Input, Alert } from "@mantine/core";
+import {
+  Grid,
+  Container,
+  Loader,
+  Group,
+  Input,
+  Alert,
+  Button,
+  Center,
+} from "@mantine/core";
 import axios from "axios";
 import PizzaCard from "../components/PizzaCard";
 import { IconSearch, IconAlertCircle } from "@tabler/icons";
@@ -56,7 +65,18 @@ function Home() {
             mr="auto"
           >
             Что-то пошло не так! Не удалось получить данные, пожалуйста
-            проверьте ваш еподключение к интернету.
+            проверьте ваше подключение к интернету.
+            <br />
+            <Center>
+              <Button
+                variant="light"
+                color="orange"
+                mt="2%"
+                onClick={() => window.location.reload()}
+              >
+                Переподключиться
+              </Button>
+            </Center>
           </Alert>
         ) : (
           <>
@@ -88,7 +108,7 @@ function Home() {
                   <Grid gutter="xl">
                     {filteredSearchInput.map((obj) => (
                       <Grid.Col span={4}>
-                        <PizzaCard key={obj.id} {...obj} />
+                        <PizzaCard key={Number(obj.id)} {...obj} />
                       </Grid.Col>
                     ))}
                   </Grid>
