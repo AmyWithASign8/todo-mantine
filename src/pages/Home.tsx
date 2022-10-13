@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import PizzaCard from "../components/PizzaCard";
 import { IconSearch, IconAlertCircle } from "@tabler/icons";
+import { useAuth } from "../redux/hooks/useAuth";
 
 export interface IPizza {
   id: number;
@@ -52,7 +53,9 @@ function Home() {
     loader();
   }, [searchInput]);
 
-  return (
+  const { isAuth, email } = useAuth();
+
+  return isAuth ? (
     <>
       <Group>
         {dataError ? (
@@ -118,6 +121,20 @@ function Home() {
           </>
         )}
       </Group>
+    </>
+  ) : (
+    <>
+      <Alert
+        icon={<IconAlertCircle size={16} />}
+        title="Внимание!"
+        color="red"
+        mt="20%"
+        ml="auto"
+        mr="auto"
+        style={{ width: "50%" }}
+      >
+        Чтобы просматривать товар зарегистрируйтесь или войдите в свой аккаунт!
+      </Alert>
     </>
   );
 }

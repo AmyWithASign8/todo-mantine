@@ -20,6 +20,8 @@ import {
   IconShoppingCart,
   IconSunHigh,
   IconMoon,
+  IconUserCircle,
+  IconLogout,
 } from "@tabler/icons";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks/hook";
@@ -29,7 +31,8 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { useAppDispatch } from "../../redux/hooks/hook";
-import { setUser } from "../../redux/slices/userSlice";
+import { removeUser, setUser } from "../../redux/slices/userSlice";
+import { useAuth } from "../../redux/hooks/useAuth";
 
 interface FormsProps {
   handleClick: (email: string, pass: string) => void;
@@ -60,15 +63,38 @@ const Header: React.FC<FormsProps> = () => {
   const handleLogin = (email: string, password: string) => {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
-      .then(console.log)
-      .catch(console.error);
+      .then(({ user }) => {
+        console.log(user);
+        dispatch(
+          setUser({
+            email: user.email,
+            id: user.uid,
+            token: user.refreshToken,
+          })
+        );
+        setOpened1(false);
+      })
+      .catch(() => alert("Invalid user!"));
   };
+
   const handleRegister = (email: string, password: string) => {
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
-      .then(() => console.log(email, password))
+      .then(({ user }) => {
+        console.log(user);
+        dispatch(
+          setUser({
+            email: user.email,
+            id: user.uid,
+            token: user.refreshToken,
+          })
+        );
+        setOpened(false);
+      })
       .catch(console.error);
   };
+
+  const { isAuth, email } = useAuth();
 
   return (
     <MantineHeaeder
@@ -98,6 +124,12 @@ const Header: React.FC<FormsProps> = () => {
 
           <Group>
             <Menu shadow="md" width={300}>
+              {isAuth && (
+                <>
+                  <IconUserCircle />
+                  <p>{email}</p>
+                </>
+              )}
               <Menu.Target>
                 <Button
                   variant="gradient"
@@ -107,13 +139,33 @@ const Header: React.FC<FormsProps> = () => {
                 </Button>
               </Menu.Target>
               <Menu.Dropdown>
-                <Menu.Label>Авторизация</Menu.Label>
-                <Menu.Item onClick={() => setOpened(true)} icon={<IconUser />}>
-                  Регистрация
-                </Menu.Item>
-                <Menu.Item onClick={() => setOpened1(true)} icon={<IconUser />}>
-                  Войти в аккаунт
-                </Menu.Item>
+                {!isAuth ? (
+                  <>
+                    <Menu.Label>Авторизация</Menu.Label>
+                    <Menu.Item
+                      onClick={() => setOpened(true)}
+                      icon={<IconUser />}
+                    >
+                      Регистрация
+                    </Menu.Item>
+                    <Menu.Item
+                      onClick={() => setOpened1(true)}
+                      icon={<IconUser />}
+                    >
+                      Войти в аккаунт
+                    </Menu.Item>
+                  </>
+                ) : (
+                  <>
+                    <Menu.Label>Действия с аккаунтом</Menu.Label>
+                    <Menu.Item
+                      onClick={() => dispatch(removeUser())}
+                      icon={<IconLogout />}
+                    >
+                      Выйти из аккаунта
+                    </Menu.Item>
+                  </>
+                )}
                 <Menu.Label>Разное</Menu.Label>
                 <Menu.Item
                   onClick={() => dispatch(switchTheme())}
@@ -227,7 +279,7 @@ const Header: React.FC<FormsProps> = () => {
         />
         <Group position="center" mt="xl">
           <Button
-            onClick={() => handleLogin("123", "213")}
+            onClick={() => handleLogin(emailAuth, pswAuth)}
             variant="gradient"
             gradient={{ from: "orange", to: "red" }}
           >
