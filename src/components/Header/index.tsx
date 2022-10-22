@@ -33,6 +33,7 @@ import {
 import { useAppDispatch } from "../../redux/hooks/hook";
 import { removeUser, setUser } from "../../redux/slices/userSlice";
 import { useAuth } from "../../redux/hooks/useAuth";
+import { showNotification } from "@mantine/notifications";
 
 interface FormsProps {
   handleClick: (email: string, pass: string) => void;
@@ -72,6 +73,8 @@ const Header: React.FC<FormsProps> = () => {
             token: user.refreshToken,
           })
         );
+        localStorage.setItem("email", email);
+        localStorage.setItem("password", password);
         setOpened1(false);
       })
       .catch(() => alert("Invalid user!"));
@@ -89,12 +92,18 @@ const Header: React.FC<FormsProps> = () => {
             token: user.refreshToken,
           })
         );
+        localStorage.setItem("email", email);
         setOpened(false);
       })
       .catch(console.error);
   };
 
   const { isAuth, email } = useAuth();
+
+  const exitUser = () => {
+    dispatch(removeUser());
+    localStorage.removeItem("email");
+  };
 
   return (
     <MantineHeaeder
@@ -158,10 +167,7 @@ const Header: React.FC<FormsProps> = () => {
                 ) : (
                   <>
                     <Menu.Label>Действия с аккаунтом</Menu.Label>
-                    <Menu.Item
-                      onClick={() => dispatch(removeUser())}
-                      icon={<IconLogout />}
-                    >
+                    <Menu.Item onClick={() => exitUser()} icon={<IconLogout />}>
                       Выйти из аккаунта
                     </Menu.Item>
                   </>
@@ -175,16 +181,34 @@ const Header: React.FC<FormsProps> = () => {
                 </Menu.Item>
               </Menu.Dropdown>
             </Menu>
-            <Link to="/cart">
+            {!isAuth ? (
               <Button
                 variant="gradient"
                 gradient={{ from: "orange", to: "red" }}
                 mr={100}
                 leftIcon={<IconShoppingCart />}
+                onClick={() =>
+                  showNotification({
+                    title: "Пользователь не авторизован",
+                    message:
+                      "Чтобы зайти в корзину вам нужно авторизоваться!🤥",
+                  })
+                }
               >
                 Корзина
               </Button>
-            </Link>
+            ) : (
+              <Link to="/cart">
+                <Button
+                  variant="gradient"
+                  gradient={{ from: "orange", to: "red" }}
+                  mr={100}
+                  leftIcon={<IconShoppingCart />}
+                >
+                  Корзина
+                </Button>
+              </Link>
+            )}
           </Group>
         </Group>
       </Group>
