@@ -104,7 +104,6 @@ const Header: React.FC<FormsProps> = () => {
     dispatch(removeUser());
     localStorage.removeItem("email");
   };
-
   return (
     <MantineHeaeder
       height={100}

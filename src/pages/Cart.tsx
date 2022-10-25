@@ -1,6 +1,20 @@
-import { Stack, Button, Title, Group, Divider } from "@mantine/core";
+import {
+  Stack,
+  Button,
+  Title,
+  Group,
+  Divider,
+  Card,
+  Image,
+  Text,
+  Grid,
+} from "@mantine/core";
 import React from "react";
 import { IconTrash } from "@tabler/icons";
+import { isTemplateSpan } from "typescript";
+import { Container } from "tabler-icons-react";
+import { useAppDispatch, useAppSelector } from "../redux/hooks/hook";
+import { removeItem } from "../redux/slices/cartSlice";
 
 function Cart() {
   const [cartItem, setCartItem] = React.useState([]);
@@ -15,55 +29,62 @@ function Cart() {
     else setPizzasCount((pizzasCount as number) - 1);
   };
 
+  const { items } = useAppSelector((state) => state.cart);
+
+  const dispatch = useAppDispatch();
+  const clickToRemove = (name: string) => {
+    dispatch(removeItem(name));
+    console.log(name);
+  };
   return (
     <>
-      <Title order={1} align="center" mt={150}>
-        Корзина
-      </Title>
+      {items.length !== 0 ? (
+        <>
+          <Title order={1} align="center" mt={150} mb={40}>
+            Корзина
+          </Title>
 
-      <Stack mt={100}>
-        <Divider my="sm" />
-        <Group position="apart">
-          <Group>
-            <img
-              src="https://dodopizza.azureedge.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
-              width={150}
-              style={{ borderRadius: "30%" }}
-            />
-            <Title order={2}>пицца</Title>
-          </Group>
-          <Group>
-            <Button
-              onClick={decrement}
-              radius="xl"
-              variant="gradient"
-              gradient={{ from: "orange", to: "red" }}
-            >
-              -
-            </Button>
-            <Title order={2}>{pizzasCount}</Title>
-            <Button
-              onClick={increment}
-              radius="xl"
-              variant="gradient"
-              gradient={{ from: "orange", to: "red" }}
-            >
-              +
-            </Button>
-            <Title order={2}>количество</Title>
-          </Group>
-          <Button
-            radius="xl"
-            variant="gradient"
-            gradient={{ from: "orange", to: "red" }}
-            leftIcon={<IconTrash />}
-            mr={40}
-          >
-            Убрать
-          </Button>
-        </Group>
-        <Divider my="sm" />
-      </Stack>
+          <Grid gutter="xl">
+            {items.map(({ name, imgUrl }) => (
+              <>
+                <Grid.Col span={4}>
+                  <Card shadow="sm" p="lg" radius="md" withBorder>
+                    <Card.Section>
+                      <Image src={imgUrl} alt="Norway" />
+                    </Card.Section>
+
+                    <Group position="apart" mt="md" mb="xs">
+                      <Text weight={500}>{name}</Text>
+                    </Group>
+
+                    <Text size="sm" color="dimmed">
+                      With Fjord Tours you can explore more of the magical fjord
+                      landscapes with tours and activities on and around the
+                      fjords of Norway
+                    </Text>
+
+                    <Button
+                      variant="outline"
+                      color="orange"
+                      fullWidth
+                      mt="md"
+                      radius="md"
+                      leftIcon={<IconTrash />}
+                      onClick={() => clickToRemove(name)}
+                    >
+                      Убрать
+                    </Button>
+                  </Card>
+                </Grid.Col>
+              </>
+            ))}
+          </Grid>
+        </>
+      ) : (
+        <Title order={1} align="center" mt={150} mb={40}>
+          Корзина пуста :(
+        </Title>
+      )}
     </>
   );
 }

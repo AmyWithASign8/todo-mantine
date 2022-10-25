@@ -30,6 +30,7 @@ function Home() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [searchInput, setSearchInput] = React.useState("");
   const [dataError, setDataError] = React.useState(false);
+
   React.useEffect(() => {
     axios
       .get("http://localhost:3001/pizzas")
