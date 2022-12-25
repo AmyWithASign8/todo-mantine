@@ -6,6 +6,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import { NotificationsProvider } from "@mantine/notifications";
+import PizzaTypes from "./pages/PizzaTypes";
 
 function App() {
   const theme = useAppSelector((state) => state.themeState.theme);
@@ -26,6 +27,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="cart" element={<Cart />} />
+            <Route path="pizzatypes" element={<PizzaTypes />} />
           </Routes>
         </div>
       </NotificationsProvider>

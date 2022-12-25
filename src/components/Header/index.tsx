@@ -1,5 +1,5 @@
 import React from "react";
-import MantineImg from "../../assets/img/Mantine.png";
+import TastyPizzaImg from "../../assets/img/favicon.png";
 import {
   Drawer,
   Button,
@@ -118,7 +118,7 @@ const Header: React.FC<FormsProps> = () => {
           <Group>
             <Link to="/">
               <img
-                src={MantineImg}
+                src={TastyPizzaImg}
                 className="w-28 rounded-full"
                 style={{
                   width: "100px",
@@ -127,7 +127,7 @@ const Header: React.FC<FormsProps> = () => {
                 }}
               />
             </Link>
-            <h1 className="font-bold text-6xl ml-4">Mantine</h1>
+            <h1 className="font-bold text-6xl ml-4">Tasty pizza</h1>
           </Group>
 
           <Group>
