@@ -15,6 +15,7 @@ import { isTemplateSpan } from "typescript";
 import { Container } from "tabler-icons-react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hook";
 import { removeItem } from "../redux/slices/cartSlice";
+import { showNotification } from "@mantine/notifications";
 
 function Cart() {
   const [cartItem, setCartItem] = React.useState([]);
@@ -35,6 +36,11 @@ function Cart() {
   const clickToRemove = (name: string) => {
     dispatch(removeItem(name));
     console.log(name);
+    showNotification({
+      title: "Удалено",
+      message: "Товар успешно удален из корзины",
+      color: "teal",
+    });
   };
   return (
     <>
@@ -44,10 +50,10 @@ function Cart() {
             Корзина
           </Title>
 
-          <Grid gutter="xl">
+          <Grid gutter="xl" mr={20} ml={20}>
             {items.map(({ name, imgUrl }) => (
               <>
-                <Grid.Col span={4}>
+                <Grid.Col span={3}>
                   <Card shadow="sm" p="lg" radius="md" withBorder>
                     <Card.Section>
                       <Image src={imgUrl} alt="Norway" />

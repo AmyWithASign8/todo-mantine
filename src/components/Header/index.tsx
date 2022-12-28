@@ -22,6 +22,8 @@ import {
   IconMoon,
   IconUserCircle,
   IconLogout,
+  IconPizza,
+  IconMenu2,
 } from "@tabler/icons";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks/hook";
@@ -140,6 +142,7 @@ const Header: React.FC<FormsProps> = () => {
               )}
               <Menu.Target>
                 <Button
+                  leftIcon={<IconMenu2 />}
                   variant="gradient"
                   gradient={{ from: "orange", to: "red" }}
                 >
@@ -172,6 +175,13 @@ const Header: React.FC<FormsProps> = () => {
                   </>
                 )}
                 <Menu.Label>Разное</Menu.Label>
+                <Menu.Item
+                  component={Link}
+                  to={"/pizzatypes"}
+                  icon={<IconPizza />}
+                >
+                  Виды пицц
+                </Menu.Item>
                 <Menu.Item
                   onClick={() => dispatch(switchTheme())}
                   icon={theme === "light" ? <IconMoon /> : <IconSunHigh />}
